@@ -32,6 +32,8 @@ Public Class PageOtherSkin
         RectChecker.Fill = CreateCheckerBrush()
         ImgEditor.Source = Texture
         SetupViewport()
+        IsSlim = Settings.Get(Of Boolean)("LaunchSkinSlim") '与离线皮肤设置保持一致
+        If IsSlim Then RadioAlex.SetChecked(True, False, False)
         FillBlankSkin()
         BuildPalette()
         UpdateColorUi()
@@ -444,6 +446,25 @@ Public Class PageOtherSkin
         Catch ex As Exception
             Logger.Error(ex, "导出皮肤失败")
             MyMsgBox("导出皮肤失败：" & ex.Message, "导出失败", "确定", IsWarn:=True)
+        End Try
+    End Sub
+
+    ''' <summary>将当前作品应用为离线登录的自定义皮肤（写入 CustomSkin.png 并切换到“自定义”皮肤类型）。</summary>
+    Private Sub BtnApply_Click(sender As Object, e As MouseButtonEventArgs) Handles BtnApply.Click
+        Try
+            Dim Target As String = Paths.AppDataThenName & "CustomSkin.png"
+            Dim Encoder As New PngBitmapEncoder()
+            Encoder.Frames.Add(BitmapFrame.Create(Texture))
+            Using Fs As New IO.FileStream(Target, IO.FileMode.Create)
+                Encoder.Save(Fs)
+            End Using
+            Settings.Set("LaunchSkinType", 4) '自定义
+            Settings.Set("LaunchSkinSlim", IsSlim)
+            PageLaunchLeft.SkinLegacy.Start(IsForceRestart:=True)
+            Hint($"皮肤已应用！将以 {If(IsSlim, "Alex", "Steve")} 模型启动离线游戏", HintType.Green)
+        Catch ex As Exception
+            Logger.Error(ex, "应用离线皮肤失败")
+            MyMsgBox("应用皮肤失败：" & ex.Message, "应用失败", "确定", IsWarn:=True)
         End Try
     End Sub
 

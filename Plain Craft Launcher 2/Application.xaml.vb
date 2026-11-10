@@ -8,8 +8,17 @@ Public Class Application
     Private Sub Application_Startup(sender As Object, e As StartupEventArgs) Handles Me.Startup
         Try
             '核心初始化
-            MeloongCore.Main.Init("PCL")
+            MeloongCore.Main.Init("PCLRE")
             MeloongCore.Wpf.Main.Init()
+            '旧版数据文件夹迁移：PCL → PCLRE（必须在日志器初始化前，否则日志器会先创建新文件夹导致迁移跳过）
+            Try
+                Dim OldDataFolder As String = Paths.Base & "PCL"
+                If Directory.Exists(OldDataFolder) AndAlso Not Directory.Exists(Paths.BaseThenName) Then
+                    FileUtils.Move(OldDataFolder, Paths.BaseThenName)
+                End If
+            Catch ex As Exception
+                '迁移失败不致命，继续使用全新文件夹
+            End Try
             Logger.Instance = New PclLogger With {.logFolder = Paths.BaseThenName, .MinLevel = If(ModeDebug, LogLevel.Trace, LogLevel.Info)}
             '提升主线程优先级
             Thread.CurrentThread.Priority = ThreadPriority.Highest
@@ -68,12 +77,12 @@ Public Class Application
             End If
             '初始化文件结构
             Try
-                DirectoryUtils.Create(Paths.Base & "PCL\Pictures\")
-                DirectoryUtils.Create(Paths.Base & "PCL\Musics\")
+                DirectoryUtils.Create(Paths.BaseThenName & "Pictures\")
+                DirectoryUtils.Create(Paths.BaseThenName & "Musics\")
                 DirectoryUtils.Create(Paths.Base & "PCLSE\")
                 CheckPermissionWithException(Paths.Base & "PCLSE\")
             Catch ex As Exception
-                MsgBox($"PCL 没有对当前文件夹的权限（{Paths.Base}PCL\），请尝试：" & vbCrLf &
+                MsgBox($"PCL 没有对当前文件夹的权限（{Paths.BaseThenName}），请尝试：" & vbCrLf &
                   "1. 将 PCL 移动到其他文件夹" & If(Paths.Base.StartsWithF("C:", True), "，例如 C 盘和桌面以外的其他位置。", "。") & vbCrLf &
                   "2. 删除当前目录中的 PCL 文件夹，然后再试。" & vbCrLf &
                   "3. 右键 PCL 选择属性，打开 兼容性 中的 以管理员身份运行此程序。",

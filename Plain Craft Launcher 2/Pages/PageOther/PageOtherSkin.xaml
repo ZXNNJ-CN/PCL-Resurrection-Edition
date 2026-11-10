@@ -16,11 +16,13 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
                         </Grid.ColumnDefinitions>
                         <local:MyButton x:Name="BtnNew" Text="新建空白" MinWidth="110" Padding="13,0" Margin="0,0,15,0" />
                         <local:MyButton Grid.Column="1" x:Name="BtnImport" Text="导入皮肤" MinWidth="110" Padding="13,0" Margin="0,0,15,0" />
                         <local:MyButton Grid.Column="2" x:Name="BtnExport" Text="导出皮肤" MinWidth="110" Padding="13,0" Margin="0,0,15,0" ColorType="Highlight" />
-                        <local:MyButton Grid.Column="3" x:Name="BtnUndo" Text="撤销" MinWidth="110" Padding="13,0" />
+                        <local:MyButton Grid.Column="3" x:Name="BtnApply" Text="应用为离线皮肤" MinWidth="140" Padding="13,0" Margin="0,0,15,0" ToolTip="将当前作品设置为离线登录的皮肤，下次启动离线版游戏生效" />
+                        <local:MyButton Grid.Column="4" x:Name="BtnUndo" Text="撤销" MinWidth="110" Padding="13,0" />
                     </Grid>
                     <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
                         <TextBlock Text="模型：" VerticalAlignment="Center" Opacity="0.7" />
