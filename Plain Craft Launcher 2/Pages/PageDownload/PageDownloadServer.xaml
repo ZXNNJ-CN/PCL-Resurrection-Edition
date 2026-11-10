@@ -1,0 +1,38 @@
+<local:MyPageRight
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:PCL" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" x:Class="PageDownloadServer"
+    PanScroll="PanBack">
+    <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
+        <StackPanel x:Name="PanMain" Margin="25,10">
+            <local:MyHint Theme="Blue" Text="下载原版（Vanilla）服务端到任意文件夹，并自动生成 eula.txt 与启动脚本。
+运行启动脚本前请确保已安装匹配的 Java（可在“下载 - Java 下载”页获取）。" Margin="0,15,0,15" />
+            <local:MyCard Margin="0,0,0,15" Title="下载服务端" x:Name="CardServer">
+                <StackPanel Margin="25,40,25,15">
+                    <Grid Height="35" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="游戏版本" Margin="0,0,25,0" />
+                        <local:MyComboBox Grid.Column="1" x:Name="ComboServerVersion" IsEnabled="False" />
+                    </Grid>
+                    <Grid Height="35" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
+                        </Grid.ColumnDefinitions>
+                        <local:MyButton x:Name="BtnServerDownload" Text="选择文件夹并下载" MinWidth="170" Padding="13,0" ColorType="Highlight" IsEnabled="False" />
+                    </Grid>
+                    <TextBlock x:Name="LabServerState" Text="正在获取版本列表……" Opacity="0.6" TextWrapping="Wrap" />
+                </StackPanel>
+            </local:MyCard>
+            <local:MyCard Margin="0,0,0,15" Title="免费服务器推荐" x:Name="CardRecommend">
+                <StackPanel Margin="25,40,25,15">
+                    <TextBlock Text="以下均为可以免费加入的公益服务器（Java 版，部分需要正版账号登录）：&#xa;双击复制服务器地址后，在游戏的“多人游戏”中添加即可。" Opacity="0.7" TextWrapping="Wrap" Margin="0,0,0,10" />
+                    <StackPanel x:Name="PanServerRecommend" />
+                </StackPanel>
+            </local:MyCard>
+        </StackPanel>
+    </local:MyScrollViewer>
+</local:MyPageRight>

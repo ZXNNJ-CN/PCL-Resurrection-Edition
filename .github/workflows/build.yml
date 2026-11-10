@@ -1,0 +1,44 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Windows Release Build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: msbuild "Plain Craft Launcher 2.sln" /t:Restore /p:Configuration=Release /p:Platform="Any CPU"
+
+      - name: Build
+        run: msbuild "Plain Craft Launcher 2.sln" /m /p:Configuration=Release /p:Platform="Any CPU"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PCL2-Release
+          path: |
+            Plain Craft Launcher 2/bin/**
+          if-no-files-found: error
